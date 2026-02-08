@@ -1,6 +1,8 @@
 package com.saraai.peergo.controller;
 
 import com.saraai.peergo.models.User;
+import com.saraai.peergo.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -9,6 +11,10 @@ import java.util.Optional;
 
 @RestController
 public class UserController {
+
+    @Autowired
+    UserRepository userRepository;
+
     @GetMapping("/users")
     public List<User> getUsers(){
         List<User>users = new ArrayList<>();
@@ -49,6 +55,7 @@ public class UserController {
         return user1;
     }
 
+
     @PostMapping
     public User createUser(@RequestBody User user){
         User newUser = new User();
@@ -57,7 +64,10 @@ public class UserController {
         newUser.setEmail(user.getEmail());
         newUser.setFirstName(user.getFirstName());
         newUser.setLastName(user.getLastName());
-        return  newUser;
+
+        User savedUser = userRepository.save(newUser);
+
+        return  savedUser;
     }
 
 
